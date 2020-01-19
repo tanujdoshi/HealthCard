@@ -1,10 +1,18 @@
 <!--::regervation_part start::-->
     <section class="regervation_part section_padding">
         <div class="container">
+            <select class="form-control mb-3 col-7" id="allocation-algorithm" [(ngModel)]="selectType">
+                <option value="patient">As Patient</option>
+                <option value="doctor">As Doctor</option>
+                <option value="medic">As Medical shop owner</option>
+                <option value="lab">As Labratory Owner</option>
+            </select>  
+
             <div class="row align-items-center regervation_content">
                 <div class="col-lg-7">
                     <div class="regervation_part_iner">
-                        <form #PatientForm>
+
+                        <form #PatientForm *ngIf="selectType == 'patient'">
                             <h2>Patient Registration</h2>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -39,6 +47,32 @@
                                 <button class="btn_2" type="button" (click)="registerPatient(PatientForm)">Register</button>
                             </div>
                         </form>
+
+
+                        <form #DoctorForm *ngIf="selectType == 'doctor'">
+                            <h2>Doctor Registration</h2>
+
+                            <div class="regerv_btn">
+                                <button class="btn_2" type="button" (click)="registerDoctor(DoctorForm)">Register</button>
+                            </div>
+                        </form>
+
+
+                        
+                        <form #MedicForm *ngIf="selectType == 'medic'">
+                            <h2>Medical Shop Registration</h2>
+                            <div class="regerv_btn">
+                                <button class="btn_2" type="button" (click)="registerMedic(MedicForm)">Register</button>
+                            </div>
+                        </form>
+
+                        
+                        <form #LabForm *ngIf="selectType == 'lab'">
+                            <h2>Labratory Registration</h2>
+                            <div class="regerv_btn">
+                                <button class="btn_2" type="button" (click)="registerLab(LabForm)">Register</button>
+                            </div>
+                        </form> 
                     </div>
                 </div>
                 <div class="col-lg-5 col-md-6">
