@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+
 import {RegisterService} from '../register.service';
 import { RouterModule, Router } from '@angular/router';
 import {ToastrService} from 'ngx-toastr'
+
 
 @Component({
   selector: 'app-signup',
@@ -9,6 +11,7 @@ import {ToastrService} from 'ngx-toastr'
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
+
 
 
   constructor(private register:RegisterService,private Toastr:ToastrService,private router:Router) { }
@@ -20,6 +23,7 @@ export class SignupComponent implements OnInit {
   }
   registerPatient(form)
   {
+
     var name=form.name.value;
     //var contact=form.contact.value;
     var password = form.password.value;
@@ -35,6 +39,7 @@ export class SignupComponent implements OnInit {
     {
     localStorage.setItem("user",select);
     this.router.navigate(['/Signup2'],{queryParams: { name: name,password:password,address:address } })
+
   }
 }
   

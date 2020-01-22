@@ -8,7 +8,8 @@ import { LoginComponent } from './login/login.component';
 import { HeaderComponent } from './header/header.component';
 import { SignupComponent } from './signup/signup.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { FooterComponent } from './footer/footer.component';
+import {HttpClientModule} from '@angular/common/http';
 import { Signup2Component } from './signup2/signup2.component';
 import {ToastrModule} from 'ngx-toastr';
 
@@ -18,8 +19,7 @@ import {ToastrModule} from 'ngx-toastr';
     LoginComponent,
     HeaderComponent,
     SignupComponent,
-    Signup2Component,
-    
+    FooterComponent
   ],
   imports: [
     BrowserModule,
