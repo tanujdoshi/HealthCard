@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {RegisterService} from '../register.service';
+import { RouterModule, Router } from '@angular/router';
+import {ToastrService} from 'ngx-toastr'
 
 @Component({
   selector: 'app-signup',
@@ -7,18 +10,32 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SignupComponent implements OnInit {
 
-  public selectType:string = "patient";
-  constructor() { }
+
+  constructor(private register:RegisterService,private Toastr:ToastrService,private router:Router) { }
+
 
   ngOnInit() {
+    this.Toastr.error("Passwords must match")
+
   }
   registerPatient(form)
   {
-    var patientName=form.name.value;
-    var patientCno=form.contactNo.value;
-    var dob = form.DOB.value;
-    var bloodType = form.bloodType.value;
+    var name=form.name.value;
+    //var contact=form.contact.value;
+    var password = form.password.value;
+    var cpassword = form.cpassword.value;
     var address = form.address.value;
-    console.log(patientName , patientCno,bloodType,dob,"\n",address);
+    var select = form.select.value;
+    if(select == "1")
+    {
+     // console.log('Select')
+      this.Toastr.warning("Select How Do You Want TO Sign Up")
+    }
+    else
+    {
+    localStorage.setItem("user",select);
+    this.router.navigate(['/Signup2'],{queryParams: { name: name,password:password,address:address } })
   }
+}
+  
 }
