@@ -20,10 +20,41 @@ app.use((req, res, next) => {
 });
 var mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
+
 mongoose.connect("mongodb://localhost:27017/HealthCard", {
   useUnifiedTopology: true,
   useNewUrlParser: true,
   useCreateIndex: true
+});
+
+var chemist = require("./schemas/chemist");
+var lab = require("./schemas/lab");
+var login = require("./schemas/login");
+var user = require("./schemas/user");
+
+app.post("/registeruser", async (req, res) => {
+  new login({
+    uname: req.body.name,
+    password: req.body.password,
+    module: req.body.user
+  }).save(function(err, data) {
+    if (err) {
+      console.log("Error");
+    }
+  });
+  new user({
+    name: req.body.name,
+    password: req.body.password,
+    address: req.body.address,
+    contact: req.body.contact,
+    dob: req.body.dob,
+    blood: req.body.blood,
+    email: req.body.email
+  }).save(function(err, data) {
+    if (err) {
+      console.log("Error");
+    }
+  });
 });
 
 var chemist = require("./schemas/chemist");

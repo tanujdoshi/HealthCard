@@ -76,4 +76,12 @@ export class Signup2Component implements OnInit {
       this.user
     );
   }
+  registerPatient(form)
+  {
+    var contact = form.contact.value;
+    var dob=form.DOB.value;
+    var blood=form.bloodType.value;
+    var email=form.email.value;
+    this.register.registeruser(this.name,this.password,this.address,contact,dob,blood,email,this.user);
+  }
 }
