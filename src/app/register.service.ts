@@ -68,17 +68,24 @@ export class RegisterService {
       });
   }
 
-  registeruser(name , password,address,contact,dob,blood,email,user){
+  registeruser(name, password, address, contact, dob, blood, email, user) {
     //console.log("in registershop");
-    this.http.post("http://localhost:8000/registeruser",{name , password,address,contact,dob,blood,email,user})
-    .subscribe((response: any)=> {
-      if(response.success)
-      {
-        console.log("Inserted Successfully")
-        this.Toastr.success("Registration of medical shop successfull!!")
-      }
-
-    })
-
+    this.http
+      .post("http://localhost:8000/registeruser", {
+        name,
+        password,
+        address,
+        contact,
+        dob,
+        blood,
+        email,
+        user
+      })
+      .subscribe((response: any) => {
+        if (response.success) {
+          console.log("Inserted Successfully");
+          this.Toastr.success("Registration of medical shop successfull!!");
+        }
+      });
   }
 }
