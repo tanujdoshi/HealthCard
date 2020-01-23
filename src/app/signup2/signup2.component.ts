@@ -24,7 +24,7 @@ export class Signup2Component implements OnInit {
   ngOnInit() {
     this.name = this._route.snapshot.queryParams.name;
     // this.contact=this._route.snapshot.queryParams.contact;
-    this.password = this._route.snapshot.queryParams.password;
+    this.password =localStorage.getItem("password");
     this.address = this._route.snapshot.queryParams.address;
     this.user = localStorage.getItem("user");
     //console.log(this.user , this.name , this.address);
@@ -78,6 +78,7 @@ export class Signup2Component implements OnInit {
   }
   registerPatient(form)
   {
+    //console.log("In com");
     var contact = form.contact.value;
     var dob=form.DOB.value;
     var blood=form.bloodType.value;

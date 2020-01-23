@@ -84,7 +84,21 @@ export class RegisterService {
       .subscribe((response: any) => {
         if (response.success) {
           console.log("Inserted Successfully");
-          this.Toastr.success("Registration of medical shop successfull!!");
+          this.Toastr.success("Registration of user successfull!!");
+        }
+      });
+  }
+  login(uname, password) {
+    this.http
+      .post("http://localhost:8000/login", { uname, password })
+      .subscribe((response: any) => {
+        console.log("login:", response);
+        if (response.success) {
+          sessionStorage.setItem("isLogged", "true");
+          sessionStorage.setItem("userType", response.userType);
+          this.Toastr.success("Login Successful");
+        } else {
+          this.Toastr.error("Login Failed");
         }
       });
   }

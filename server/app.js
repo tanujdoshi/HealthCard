@@ -148,4 +148,30 @@ app.post("/register", async (req, res) => {
     });
   }
 });
+app.post("/login", (req, res) => {
+  console.log("req body", req.body);
+  var user = login
+    .findOne(
+      {
+        uname: req.body.uname,
+        password: req.body.password
+      },
+      {
+        password: 0
+      }
+    )
+    .then(r => {
+      console.log("r:", r, " u:", user);
+      if (r == null) {
+        res.status(200).json({
+          success: false
+        });
+      } else {
+        res.status(200).json({
+          success: true,
+          userType: r.module
+        });
+      }
+    });
+});
 app.listen(8000, () => console.log("server is listening at 8000"));
