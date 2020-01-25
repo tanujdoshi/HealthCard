@@ -4,19 +4,28 @@
     <div class="row align-items-center regervation_content">
       <div class="col-lg-7">
         <div class="regervation_part_iner">
-          <form #PatientForm>
-            <h2>Basic Registration</h2>
+          <form #BasicForm>
+            <h2>Registration</h2>
             <div class="form-row">
-              <div class="form-group col-md-12">
+              <div class="form-group col-md-6">
                 <input
                   type="text"
                   class="form-control"
-                  id="name"
-                  placeholder="Name"
+                  id="fname"
+                  placeholder="First Name"
                 />
               </div>
-
               <div class="form-group col-md-6">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="lname"
+                  placeholder="Last Name"
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-12">
                 <input
                   type="password"
                   class="form-control"
@@ -24,7 +33,9 @@
                   placeholder="Enter Password"
                 />
               </div>
-              <div class="form-group col-md-6">
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-12">
                 <input
                   type="password"
                   class="form-control"
@@ -32,15 +43,61 @@
                   placeholder="Confirm Password"
                 />
               </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  placeholder="Enter Email Id"
+                />
+              </div>
+              <div class="form-group col-md-6">
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="contact"
+                  placeholder="Enter Contact Number"
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <select class="form-control" id="bloodType">
+                  <option selected>Slect Blood Type</option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                </select>
+              </div>
+              <div class="form-group time_icon col-md-6">
+                <input
+                  class="form-control"
+                  type="text"
+                  onfocus="this.type='Date'"
+                  onblur="this.type='text'"
+                  id="DOB"
+                  placeholder="Date of Birth"
+                />
+              </div>
+            </div>
+            <div class="form-row">
               <div class="form-group col-md-12">
                 <textarea
                   class="form-control"
                   id="address"
-                  rows="4"
+                  rows="2"
                   placeholder="Address "
                 ></textarea>
               </div>
-
+            </div>
+            <div class="form-row">
               <div class="form-group col-md-12">
                 <select class="form-control" id="select">
                   <option value="1" selected>Sign Up As</option>
@@ -51,13 +108,8 @@
                 </select>
               </div>
             </div>
-
             <div class="regerv_btn">
-              <button
-                class="btn_2"
-                type="button"
-                (click)="registerPatient(PatientForm)"
-              >
+              <button class="btn_2" type="button" (click)="register(BasicForm)">
                 Register
               </button>
             </div>

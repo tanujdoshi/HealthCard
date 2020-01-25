@@ -20,7 +20,7 @@ import { ToastrModule } from "ngx-toastr";
     HeaderComponent,
     SignupComponent,
     FooterComponent,
-    Signup2Component
+    Signup2Component  
   ],
   imports: [
     BrowserModule,

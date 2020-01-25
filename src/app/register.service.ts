@@ -68,17 +68,42 @@ export class RegisterService {
       });
   }
 
-  registeruser(name , password,address,contact,dob,blood,email,user){
+  getId(fname, lname, user, dob) {
+    //XXXX-XXXX-XXXX   user id create here
+  }
+
+  registeruser(name, password, address, contact, dob, blood, email, user) {
     //console.log("in registershop");
-    this.http.post("http://localhost:8000/registeruser",{name , password,address,contact,dob,blood,email,user})
-    .subscribe((response: any)=> {
-      if(response.success)
-      {
-        console.log("Inserted Successfully")
-        this.Toastr.success("Registration of medical shop successfull!!")
-      }
-
-    })
-
+    this.http
+      .post("http://localhost:8000/registeruser", {
+        name,
+        password,
+        address,
+        contact,
+        dob,
+        blood,
+        email,
+        user
+      })
+      .subscribe((response: any) => {
+        if (response.success) {
+          console.log("Inserted Successfully");
+          this.Toastr.success("Registration of user successfull!!");
+        }
+      });
+  }
+  login(uname, password) {
+    this.http
+      .post("http://localhost:8000/login", { uname, password })
+      .subscribe((response: any) => {
+        console.log("login:", response);
+        if (response.success) {
+          sessionStorage.setItem("isLogged", "true");
+          sessionStorage.setItem("userType", response.userType);
+          this.Toastr.success("Login Successful");
+        } else {
+          this.Toastr.error("Login Failed");
+        }
+      });
   }
 }
