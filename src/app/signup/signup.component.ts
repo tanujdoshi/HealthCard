@@ -1,46 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
-import {RegisterService} from '../register.service';
-import { RouterModule, Router } from '@angular/router';
-import {ToastrService} from 'ngx-toastr'
-
+import { RegisterService } from "../register.service";
+import { RouterModule, Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
+import { from } from "rxjs";
 
 @Component({
-  selector: 'app-signup',
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+  selector: "app-signup",
+  templateUrl: "./signup.component.html",
+  styleUrls: ["./signup.component.css"]
 })
 export class SignupComponent implements OnInit {
+  basicForm: JSON;
+  constructor(private Toastr: ToastrService, private router: Router) {}
 
-
-
-  constructor(private register:RegisterService,private Toastr:ToastrService,private router:Router) { }
-
-
-  ngOnInit() {
-    this.Toastr.error("Passwords must match")
-
-  }
-  registerPatient(form)
-  {
-
-    var name=form.name.value;
-    //var contact=form.contact.value;
+  ngOnInit() {}
+  register(form) {
     var password = form.password.value;
     var cpassword = form.cpassword.value;
-    var address = form.address.value;
     var select = form.select.value;
-    if(select == "1")
-    {
-     // console.log('Select')
-      this.Toastr.warning("Select How Do You Want TO Sign Up")
+    if (select == "1") {
+      this.Toastr.warning("Select How Do You Want TO Sign Up");
+    } else if (password != cpassword) {
+      this.Toastr.warning("password not matched");
+    } else {
+      this.router.navigate(["/Signup2"], {
+        state: {
+          fname: form.fname.value,
+          lname: form.lname.value,
+          password: password,
+          email: form.email.value,
+          user: select,
+          blood: form.bloodType.value,
+          dob: form.DOB.value,
+          contact: form.contact.value,
+          address: form.address.value
+        }
+      });
     }
-    else
-    {
-    localStorage.setItem("user",select);
-    this.router.navigate(['/Signup2'],{queryParams: { name: name,password:password,address:address } })
-
   }
-}
-  
 }

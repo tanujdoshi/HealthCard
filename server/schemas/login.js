@@ -1,9 +1,7 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 var loginschema = new mongoose.Schema({
-    uname:String ,
-    password:String,
-    module:String,
-    
+  user_id: String,
+  password: String
 });
 var login = mongoose.model("login", loginschema);
 
