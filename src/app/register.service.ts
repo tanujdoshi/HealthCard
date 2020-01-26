@@ -69,7 +69,10 @@ export class RegisterService {
   }
 
   registerUser(fname, lname, password, address, contact, dob, blood, email, user) {
-    this.http
+    this.http.get('http://localhost:8000/getUserId/'+fname+'/'+lname+'/'+user+'/'+dob)
+    .subscribe((response:any)=>{
+      var userId = response.userId
+      this.http
       .post("http://localhost:8000/registeruser", {
         fname,
         lname,
@@ -79,7 +82,8 @@ export class RegisterService {
         dob,
         blood,
         email,
-        user
+        user,
+        userId
       })
       .subscribe((response: any) => {
         if (response.success) {
@@ -87,9 +91,10 @@ export class RegisterService {
           this.Toastr.success("Registration of user successfull!!");
         }else{
           console.log('Registration Error')
-          this.Toastr.error('Registration Failed','Field')
+          this.Toastr.error('Registration Failed','Failed')
         }
       });
+    })
   }
 
 
