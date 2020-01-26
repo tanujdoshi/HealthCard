@@ -1,7 +1,7 @@
 import { Injectable, TestabilityRegistry } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
-import { ToastrService } from "ngx-toastr";
+import { ToastrService } from "../../node_modules/ngx-toastr";
 @Injectable({
   providedIn: "root"
 })
@@ -72,7 +72,7 @@ export class RegisterService {
     //XXXX-XXXX-XXXX   user id create here
   }
 
-  registeruser(name, password, address, contact, dob, blood, email, user) {
+  registerUser(name, password, address, contact, dob, blood, email, user) {
     //console.log("in registershop");
     this.http
       .post("http://localhost:8000/registeruser", {
@@ -89,9 +89,14 @@ export class RegisterService {
         if (response.success) {
           console.log("Inserted Successfully");
           this.Toastr.success("Registration of user successfull!!");
+        }else{
+          console.log('Registration Error')
+          this.Toastr.error('Registration Failed','Field')
         }
       });
   }
+
+
   login(uname, password) {
     this.http
       .post("http://localhost:8000/login", { uname, password })

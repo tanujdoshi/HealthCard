@@ -21,11 +21,14 @@ app.use((req, res, next) => {
 var mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 
-mongoose.connect("mongodb://localhost:27017/HealthCard", {
-  useUnifiedTopology: true,
-  useNewUrlParser: true,
-  useCreateIndex: true
-});
+mongoose
+  .connect("mongodb://localhost:27017/HealthCard", {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useCreateIndex: true
+  })
+  .then(() => console.log("Mongo DB connected"))
+  .catch(err => console.log("Mongo connection error ", err));
 
 var chemist = require("./schemas/chemist");
 var lab = require("./schemas/lab");
