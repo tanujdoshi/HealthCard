@@ -3,7 +3,6 @@ import { Component, OnInit } from "@angular/core";
 import { RegisterService } from "../register.service";
 import { RouterModule, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { from } from "rxjs";
 
 @Component({
   selector: "app-signup",
@@ -12,18 +11,36 @@ import { from } from "rxjs";
 })
 export class SignupComponent implements OnInit {
   basicForm: JSON;
-  constructor(private Toastr: ToastrService, private router: Router) {}
+  constructor(private Toastr: ToastrService, private router: Router,private registerService:RegisterService) {}
 
   ngOnInit() {}
+
+
   register(form) {
     var password = form.password.value;
     var cpassword = form.cpassword.value;
     var select = form.select.value;
+
     if (select == "1") {
       this.Toastr.warning("Select How Do You Want TO Sign Up");
-    } else if (password != cpassword) {
+    } 
+    else if (password != cpassword) {
       this.Toastr.warning("password not matched");
-    } else {
+    }
+    else if(select == "patient")
+    {
+      var fname =  form.fname.value
+      var lname =  form.lname.value
+      var password =  password
+      var email =  form.email.value
+      var user =  select
+      var blood =  form.bloodType.value
+      var dob =  form.DOB.value
+      var contact =  form.contact.value
+      var address =  form.address.value
+      this.registerService.registerUser(fname,lname,password,address,contact,dob,blood,email,user)
+    }
+     else {
       this.router.navigate(["/Signup2"], {
         state: {
           fname: form.fname.value,
