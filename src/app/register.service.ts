@@ -68,15 +68,11 @@ export class RegisterService {
       });
   }
 
-  getId(fname, lname, user, dob) {
-    //XXXX-XXXX-XXXX   user id create here
-  }
-
-  registerUser(name, password, address, contact, dob, blood, email, user) {
-    //console.log("in registershop");
+  registerUser(fname, lname, password, address, contact, dob, blood, email, user) {
     this.http
       .post("http://localhost:8000/registeruser", {
-        name,
+        fname,
+        lname,
         password,
         address,
         contact,

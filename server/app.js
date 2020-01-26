@@ -2,7 +2,11 @@ var express = require("express");
 var bodyparser = require("body-parser");
 var app = express();
 var cookieParser = require("cookie-parser");
-
+var chemist = require("./schemas/chemist");
+var lab = require("./schemas/lab");
+var login = require("./schemas/login");
+var doctor = require("./schemas//doctor");
+const user = require("./schemas/user");
 //var nodemailer = require('nodemailer');
 //var rn = require('random-number');
 //app.use(cookieParser());
@@ -30,40 +34,137 @@ mongoose
   .then(() => console.log("Mongo DB connected"))
   .catch(err => console.log("Mongo connection error ", err));
 
-var chemist = require("./schemas/chemist");
-var lab = require("./schemas/lab");
-var login = require("./schemas/login");
-var user = require("./schemas/user");
+async function getId(fname, lname, userType, dob) {
+  var startPart = userType.charAt(0) + fname.substring(0, 2) + lname.charAt(0);
+  var endPart =
+    dob.substring(dob.length - 2, dob.length) +
+    dob.substring(dob.length - 5, dob.length - 3);
+
+  user
+    .findOne({
+      firstname: { $regex: new RegExp("^" + fname + "$", "i") },
+      lastname: { $regex: new RegExp("^" + lname + "$", "i") }
+    })
+    .sort({ _id: -1 })
+    .then(r => {
+      var middelPart = "not defined";
+      console.log("check:", r);
+      if (r == null) {
+        console.log("mp set to default");
+        middelPart = "AA00";
+        console.log("mp:", middelPart);
+      } else {
+        console.log("mp other");
+
+        //get starting of middel in HEX
+        var m1 = r.userId.substring(4, 6);
+        console.log("m1:", m1);
+        var m2 = parseInt(r.userId.substring(6, 8)) + 1;
+        console.log("m2:", m2);
+        if (m2 >= 100) {
+          console.log("reset");
+          m2 = 0;
+          m1 = parseInt(m1, 16) + 1;
+          m1 = m1.toString(16);
+        }
+        if (m2 < 10) {
+          m2 = "0" + m2;
+        }
+        console.log("mp other");
+        middelPart = m1 + m2;
+        console.log("mp other", middelPart);
+      }
+      id = (startPart + middelPart + endPart).toUpperCase();
+
+      console.log("getId:", id);
+      return id;
+    });
+}
 
 app.post("/registeruser", async (req, res) => {
-  new login({
-    uname: req.body.name,
-    password: req.body.password,
-    module: req.body.user
-  }).save(function(err, data) {
-    if (err) {
-      console.log("Error");
-    }
-  });
-  new user({
-    name: req.body.name,
-    password: req.body.password,
-    address: req.body.address,
-    contact: req.body.contact,
-    dob: req.body.dob,
-    blood: req.body.blood,
-    email: req.body.email
-  }).save(function(err, data) {
-    if (err) {
-      console.log("Error");
-    }
-  });
-});
+  var { fname, lname, dob } = req.body;
+  var userType = req.body.user;
+  console.log(fname, lname, userType, dob);
+  var id = "not defined";
 
-var chemist = require("./schemas/chemist");
-var lab = require("./schemas/lab");
-var login = require("./schemas/login");
-var doctor = require("./schemas//doctor");
+  var startPart = userType.charAt(0) + fname.substring(0, 2) + lname.charAt(0);
+  var endPart =
+    dob.substring(dob.length - 2, dob.length) +
+    dob.substring(dob.length - 5, dob.length - 3);
+
+  user
+    .findOne({
+      firstname: { $regex: new RegExp("^" + fname + "$", "i") },
+      lastname: { $regex: new RegExp("^" + lname + "$", "i") }
+    })
+    .sort({ _id: -1 })
+    .then(r => {
+      var middelPart = "not defined";
+      console.log("check:", r);
+      if (r == null) {
+        console.log("mp set to default");
+        middelPart = "AA00";
+        console.log("mp:", middelPart);
+      } else {
+        //get starting of middel in HEX
+        var m1 = r.userId.substring(4, 6);
+        console.log("m1:", m1);
+        var m2 = parseInt(r.userId.substring(6, 8)) + 1;
+        console.log("m2:", m2);
+        if (m2 >= 100) {
+          console.log("reset");
+          m2 = 0;
+          m1 = parseInt(m1, 16) + 1;
+          m1 = m1.toString(16);
+        }
+        if (m2 < 10) {
+          m2 = "0" + m2;
+        }
+        console.log("mp other");
+        middelPart = m1 + m2;
+        console.log("mp other", middelPart);
+      }
+      id = (startPart + middelPart + endPart).toUpperCase();
+
+      // console.log("Id:", id);
+      // id = await getId(fname, lname, userType, dob);
+      // console.log("Id:", id);
+      login
+        .create({
+          email: req.body.email,
+          password: req.body.password,
+          module: req.body.user,
+          userId: id
+        })
+        .then(r => {
+          console.log("r:", r);
+          user
+            .create({
+              userId: id,
+              firstname: req.body.fname,
+              lastname: req.body.lname,
+              address: req.body.address,
+              contact: req.body.contact,
+              dob: req.body.dob,
+              blood: req.body.blood,
+              email: req.body.email,
+              userType: req.body.userType
+            })
+            .then(u => {
+              res.status(200).json({
+                success: true,
+                user: u
+              });
+            })
+            .catch(err => {
+              console.log("user error", err);
+            });
+        })
+        .catch(err => {
+          console.log("login err:", err);
+        });
+    });
+});
 
 app.post("/register", async (req, res) => {
   console.log("Inside post register app.js");
@@ -153,10 +254,10 @@ app.post("/register", async (req, res) => {
 });
 app.post("/login", (req, res) => {
   console.log("req body", req.body);
-  var user = login
+  login
     .findOne(
       {
-        uname: req.body.uname,
+        email: req.body.uname,
         password: req.body.password
       },
       {
@@ -164,7 +265,6 @@ app.post("/login", (req, res) => {
       }
     )
     .then(r => {
-      console.log("r:", r, " u:", user);
       if (r == null) {
         res.status(200).json({
           success: false

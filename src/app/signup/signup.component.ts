@@ -3,7 +3,6 @@ import { Component, OnInit } from "@angular/core";
 import { RegisterService } from "../register.service";
 import { RouterModule, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { from } from "rxjs";
 
 @Component({
   selector: "app-signup",
@@ -39,7 +38,7 @@ export class SignupComponent implements OnInit {
       var dob =  form.DOB.value
       var contact =  form.contact.value
       var address =  form.address.value
-      this.registerService.registerUser(fname,password,address,contact,dob,blood,email,user)
+      this.registerService.registerUser(fname,lname,password,address,contact,dob,blood,email,user)
     }
      else {
       this.router.navigate(["/Signup2"], {
