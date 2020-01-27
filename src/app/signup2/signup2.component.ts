@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { RegisterService } from "../register.service";
 import { ToastrService } from "ngx-toastr";
+import { IDropdownSettings } from "ng-multiselect-dropdown";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-signup2",
@@ -16,6 +18,10 @@ export class Signup2Component implements OnInit {
   public user;
   public dob;
   public userId;
+  public dropdownList = [];
+
+  private sub1: Subscription;
+  public dropdownSettings: IDropdownSettings;
 
   constructor(
     private _route: ActivatedRoute,
@@ -33,8 +39,22 @@ export class Signup2Component implements OnInit {
     this.blood = basicForm.blood;
     this.user = basicForm.user;
     this.dob = basicForm.dob;
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: "item_id",
+      textField: "item_text",
+      selectAllText: "Select All",
+      unSelectAllText: "UnSelect All",
+      itemsShowLimit: 3,
+      allowSearchFilter: true
+    };
     this.userId = this.fname + "_" + this.lname;
+    this.register.getSpecialityArray();
+    this.sub1 = this.register.getSpecList().subscribe((list: []) => {
+      this.dropdownList = list;
+    });
 
+    // this.dropdownList = this.register.getSpecialityArray();
     // Uncomment after ready getId ready in register.service.ts
     // this.userId = this.register.getId(
     //   this.fname,

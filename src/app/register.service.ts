@@ -2,6 +2,7 @@ import { Injectable, TestabilityRegistry } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
+import { Subject } from "rxjs";
 @Injectable({
   providedIn: "root"
 })
@@ -65,6 +66,22 @@ export class RegisterService {
           console.log("Inserted Successfully");
           this.Toastr.success("Registration of Doctor successfull!!");
         }
+      });
+  }
+
+  private specList = new Subject();
+
+  getSpecList() {
+    return this.specList.asObservable();
+  }
+
+  getSpecialityArray() {
+    console.log("inside getSpecialityArray");
+    this.http
+      .post("http://localhost:8000/getSpecialities", {})
+      .subscribe((response: any) => {
+        console.log(JSON.stringify(response));
+        this.specList.next(response.specialityArray);
       });
   }
 
