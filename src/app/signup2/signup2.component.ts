@@ -11,13 +11,16 @@ import { Subscription } from "rxjs";
   styleUrls: ["./signup2.component.css"]
 })
 export class Signup2Component implements OnInit {
-  public fname;
-  public lname;
-  public password;
-  public blood;
-  public user;
-  public dob;
-  public userId;
+  public fname: string;
+  public lname: string;
+  public password: string;
+  public blood: string;
+  public user: string;
+  public dob: string;
+  public userId: string;
+  public address: string;
+  public contact: string;
+  public email: string;
   public selectedItems: any[];
   public dropdownList = [];
   public specialities: any[] = [
@@ -42,8 +45,11 @@ export class Signup2Component implements OnInit {
     this.fname = basicForm.fname;
     this.lname = basicForm.lname;
     this.password = basicForm.password;
+    this.address = basicForm.address;
+    this.contact = basicForm.contact;
     this.blood = basicForm.blood;
     this.user = basicForm.user;
+    this.email = basicForm.email;
     this.dob = basicForm.dob;
     this.dropdownSettings = {
       singleSelection: false,
@@ -119,14 +125,16 @@ export class Signup2Component implements OnInit {
       this.fname,
       this.lname,
       this.password,
-      this.blood,
+      this.address,
+      this.contact,
       this.dob,
+      this.blood,
+      this.email,
       this.user,
-      this.fname,
-      this.selectedItems,
-      this.specialities,
       form.licence.value,
       form.degree.value,
+      this.selectedItems,
+      this.specialities,
       form.work_name.value,
       form.work_contact.value,
       form.work_address.value
