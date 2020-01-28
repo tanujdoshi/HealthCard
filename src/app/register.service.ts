@@ -1,7 +1,9 @@
 import { Injectable, TestabilityRegistry } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
-import { ToastrService } from "../../node_modules/ngx-toastr";
+import { ToastrService } from "ngx-toastr";
+import { Subject } from "rxjs";
+
 @Injectable({
   providedIn: "root"
 })
@@ -34,10 +36,13 @@ export class RegisterService {
 
   registeDoc(
     licence,
-    name,
+    fanme,
+    lname,
+    dob,
     password,
     work_place,
     specialist,
+    newSpecialities,
     degree,
     work_place_add,
     doc_address,
@@ -68,6 +73,28 @@ export class RegisterService {
       });
   }
 
+
+  private specList = new Subject();
+
+  getSpecList() {
+    return this.specList.asObservable();
+  }
+
+  getSpecialityArray() {
+    console.log("inside getSpecialityArray");
+    this.http
+      .post("http://localhost:8000/getSpecialities", {})
+      .subscribe((response: any) => {
+        console.log(JSON.stringify(response));
+        this.specList.next(response.specialityArray);
+      });
+  }
+
+  getId(fname, lname, user, dob) {
+    //XXXX-XXXX-XXXX   user id create here
+  }
+
+ 
   registerUser(fname, lname, password, address, contact, dob, blood, email, user) {
     this.http.get('http://localhost:8000/getUserId/'+fname+'/'+lname+'/'+user+'/'+dob)
     .subscribe((response:any)=>{

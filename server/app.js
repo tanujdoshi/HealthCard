@@ -34,6 +34,41 @@ mongoose
   .then(() => console.log("Mongo DB connected"))
   .catch(err => console.log("Mongo connection error ", err));
 
+
+var chemist = require("./schemas/chemist");
+var lab = require("./schemas/lab");
+var login = require("./schemas/login");
+var user = require("./schemas/user");
+var specialities = require("./schemas/speciality");
+
+app.post("/getSpecialities", (req, response) => {
+  console.log("Inside getSpecialities");
+  specialities.distinct("speciality").then(specs => {
+    if (specs != null) {
+      response.json({
+        specialityArray: specs
+      });
+    } else {
+      response.json({});
+    }
+    console.log("==>In app.js" + JSON.stringify(specs));
+  });
+
+  console.log("Exiting getSpecialities");
+});
+
+app.post("/addSpecialities", req => {
+  console.log("Inside addSpecialities");
+  req.body.specialityArray.forEach(function(speciality) {
+    new specialities({
+      speciality: speciality
+    }).save(function(err) {
+      console.log("Error in addSpecialities:" + error);
+    });
+  });
+  console.log("Exiting addSpecialities");
+});
+
 app.get("/getUserId/:fname/:lname/:userType/:dob", (req, res) => {
   console.log(req.params);
   var { fname, lname, userType, dob } = req.params;
@@ -213,6 +248,7 @@ app.post("/register", async (req, res) => {
     });
   }
 });
+
 app.post("/login", (req, res) => {
   console.log("req body", req.body);
   login

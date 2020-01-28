@@ -1,7 +1,7 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-
+import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { LoginComponent } from "./login/login.component";
@@ -20,13 +20,14 @@ import { ToastrModule } from "ngx-toastr";
     HeaderComponent,
     SignupComponent,
     FooterComponent,
-    Signup2Component  
+    Signup2Component
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     BrowserAnimationsModule,
+    NgMultiSelectDropDownModule.forRoot(),
     HttpClientModule,
     ToastrModule.forRoot({
       timeOut: 2000,

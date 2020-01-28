@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { RegisterService } from "../register.service";
 import { ToastrService } from "ngx-toastr";
+import { IDropdownSettings } from "ng-multiselect-dropdown";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-signup2",
@@ -16,6 +18,16 @@ export class Signup2Component implements OnInit {
   public user;
   public dob;
   public userId;
+  public selectedItems: any[];
+  public dropdownList = [];
+  public specialities: any[] = [
+    {
+      speciality: ""
+    }
+  ];
+
+  private sub1: Subscription;
+  public dropdownSettings: IDropdownSettings;
 
   constructor(
     private _route: ActivatedRoute,
@@ -33,8 +45,22 @@ export class Signup2Component implements OnInit {
     this.blood = basicForm.blood;
     this.user = basicForm.user;
     this.dob = basicForm.dob;
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: "item_id",
+      textField: "item_text",
+      selectAllText: "Select All",
+      unSelectAllText: "UnSelect All",
+      itemsShowLimit: 3,
+      allowSearchFilter: true
+    };
     this.userId = this.fname + "_" + this.lname;
+    this.register.getSpecialityArray();
+    this.sub1 = this.register.getSpecList().subscribe((list: []) => {
+      this.dropdownList = list;
+    });
 
+    // this.dropdownList = this.register.getSpecialityArray();
     // Uncomment after ready getId ready in register.service.ts
     // this.userId = this.register.getId(
     //   this.fname,
@@ -42,6 +68,16 @@ export class Signup2Component implements OnInit {
     //   this.user,
     //   this.dob
     // );
+  }
+
+  addSpeciality() {
+    this.specialities.push({
+      speciality: ""
+    });
+  }
+
+  removeSpeciality(i: number) {
+    this.specialities.splice(i, 1);
   }
 
   // registerMedic(form) {
@@ -75,21 +111,27 @@ export class Signup2Component implements OnInit {
   //   );
   // }
 
-  // registerDoc(form) {
-  //   this.register.registeDoc(
-  //     form.licence.value,
-  //     this.name,
-  //     this.password,
-  //     form.work_name.value,
-  //     form.specialist.value,
-  //     form.degree.value,
-  //     form.work_address.value,
-  //     this.address,
-  //     form.work_contact.value,
-  //     form.contact.value,
-  //     this.user
-  //   );
-  // }
+  registerDoc(form) {
+    this.specialities.forEach(spec => {
+      this.selectedItems.push(spec.speciality);
+    });
+    this.register.registeDoc(
+      this.fname,
+      this.lname,
+      this.password,
+      this.blood,
+      this.dob,
+      this.user,
+      this.fname,
+      this.selectedItems,
+      this.specialities,
+      form.licence.value,
+      form.degree.value,
+      form.work_name.value,
+      form.work_contact.value,
+      form.work_address.value
+    );
+  }
   // registerPatient(form) {
   //   //console.log("In com");
   //   var contact = form.contact.value;
