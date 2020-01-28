@@ -35,10 +35,13 @@ export class RegisterService {
 
   registeDoc(
     licence,
-    name,
+    fanme,
+    lname,
+    dob,
     password,
     work_place,
     specialist,
+    newSpecialities,
     degree,
     work_place_add,
     doc_address,

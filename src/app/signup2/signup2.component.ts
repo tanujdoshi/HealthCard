@@ -18,7 +18,13 @@ export class Signup2Component implements OnInit {
   public user;
   public dob;
   public userId;
+  public selectedItems: any[];
   public dropdownList = [];
+  public specialities: any[] = [
+    {
+      speciality: ""
+    }
+  ];
 
   private sub1: Subscription;
   public dropdownSettings: IDropdownSettings;
@@ -64,6 +70,16 @@ export class Signup2Component implements OnInit {
     // );
   }
 
+  addSpeciality() {
+    this.specialities.push({
+      speciality: ""
+    });
+  }
+
+  removeSpeciality(i: number) {
+    this.specialities.splice(i, 1);
+  }
+
   // registerMedic(form) {
   //   var licence = form.licence.value;
   //   var shopname = form.shop_name.value;
@@ -95,21 +111,27 @@ export class Signup2Component implements OnInit {
   //   );
   // }
 
-  // registerDoc(form) {
-  //   this.register.registeDoc(
-  //     form.licence.value,
-  //     this.name,
-  //     this.password,
-  //     form.work_name.value,
-  //     form.specialist.value,
-  //     form.degree.value,
-  //     form.work_address.value,
-  //     this.address,
-  //     form.work_contact.value,
-  //     form.contact.value,
-  //     this.user
-  //   );
-  // }
+  registerDoc(form) {
+    this.specialities.forEach(spec => {
+      this.selectedItems.push(spec.speciality);
+    });
+    this.register.registeDoc(
+      this.fname,
+      this.lname,
+      this.password,
+      this.blood,
+      this.dob,
+      this.user,
+      this.fname,
+      this.selectedItems,
+      this.specialities,
+      form.licence.value,
+      form.degree.value,
+      form.work_name.value,
+      form.work_contact.value,
+      form.work_address.value
+    );
+  }
   // registerPatient(form) {
   //   //console.log("In com");
   //   var contact = form.contact.value;

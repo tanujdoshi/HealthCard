@@ -167,9 +167,10 @@
                 </div>
               </div>
               <div class="form-row">
-                <div class="form-group col-md-12">
+                <div class="col-md-12">
                   <ng-multiselect-dropdown
                     name="specialitiesList"
+                    class="form-control"
                     placeholder="Doctor Specialities"
                     [data]="dropdownList"
                     [(ngModel)]="selectedItems"
@@ -178,6 +179,46 @@
                   </ng-multiselect-dropdown>
                 </div>
               </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <label style="color: #fff"
+                    >Add new Specialities which not listed above by
+                    clicking</label
+                  >
+
+                  <button
+                    type="button"
+                    class="btn btn-primary mb-2"
+                    (click)="addSpeciality()"
+                  >
+                    Add New Speciality
+                  </button>
+                  <label style="color: #fff">multiple time</label>
+                </div>
+              </div>
+              <section *ngFor="let speciality of specialities; let i = index">
+                <div class="form-row">
+                  <div class="form-group col-md-9">
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="speciality.speciality"
+                      name="speciality_{{ i }}"
+                      placeholder="New Speciality"
+                    />
+                  </div>
+                  <div class="form-group col-md-3">
+                    <button
+                      type="button"
+                      style="background-color: #c82333;"
+                      class="btn btn-sm form-control btn-danger"
+                      (click)="removeSpeciality(i)"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </section>
               <br />
               <h2>Work Place Information</h2>
               <div class="form-row">
