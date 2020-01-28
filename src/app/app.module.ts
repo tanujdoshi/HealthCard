@@ -12,6 +12,7 @@ import { FooterComponent } from "./footer/footer.component";
 import { HttpClientModule } from "@angular/common/http";
 import { Signup2Component } from "./signup2/signup2.component";
 import { ToastrModule } from "ngx-toastr";
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -20,8 +21,7 @@ import { ToastrModule } from "ngx-toastr";
     HeaderComponent,
     SignupComponent,
     FooterComponent,
-    Signup2Component  
-  ],
+    Signup2Component  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -31,7 +31,8 @@ import { ToastrModule } from "ngx-toastr";
     ToastrModule.forRoot({
       timeOut: 2000,
       positionClass: "toast-top-right"
-    })
+    }),
+    NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

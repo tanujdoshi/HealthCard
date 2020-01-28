@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 var chemistschema = new mongoose.Schema({
-    userid:String,
+    userId:String,
     licence: String,
     shopname: String,
-    DOE:Date
-   
+    DOE:Date,
+    address:String
 });
 var chemist = mongoose.model("chemist", chemistschema);
 

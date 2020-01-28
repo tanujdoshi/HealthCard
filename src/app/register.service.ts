@@ -13,11 +13,34 @@ export class RegisterService {
   ) {}
 
 
-  register(userid,password,fname,lname,email,blood,dob,contact,address,user,licence,labname,DOE) {
+  register(password,fname,lname,email,blood,dob,contact,address,user,licence,labname,DOE,lab_address,selectedItems) {
     //console.log("in registershop");
-    this.http
-      .post("http://localhost:8000/register", {
-        userid,password,fname,lname,email,blood,dob,contact,address,user,licence,labname,DOE
+    this.http.get('http://localhost:8000/getUserId/'+fname+'/'+lname+'/'+user+'/'+dob)
+    .subscribe((response:any)=>{
+      var userId = response.userId
+      if(user == "lab")
+      {
+      this.http
+        .post("http://localhost:8000/register", {
+          userId,password,fname,lname,email,blood,dob,contact,address,user,licence,labname,DOE,lab_address,selectedItems
+        })
+        .subscribe((response: any) => {
+          if (response.success) {
+            console.log("Inserted Successfully");
+            this.Toastr.success("Registration of  Lab successfull!!");
+          }
+        });
+    }
+  })
+};
+    registermedic(password,fname,lname,email,blood,dob,contact,address,user,licence,shopname,DOE,shop_address,)
+    {
+      this.http.get('http://localhost:8000/getUserId/'+fname+'/'+lname+'/'+user+'/'+dob)
+      .subscribe((response:any)=>{
+        var userId = response.userId
+      this.http
+      .post("http://localhost:8000/registermedic", {
+        userId,password,fname,lname,email,blood,dob,contact,address,user,licence,shopname,DOE,shop_address
       })
       .subscribe((response: any) => {
         if (response.success) {
@@ -25,7 +48,8 @@ export class RegisterService {
           this.Toastr.success("Registration of medical shop successfull!!");
         }
       });
-  }
+    })
+    }
 
   registeDoc(
     licence,
