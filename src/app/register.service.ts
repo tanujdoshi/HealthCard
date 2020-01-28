@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { Subject } from "rxjs";
+
 @Injectable({
   providedIn: "root"
 })
@@ -72,6 +73,7 @@ export class RegisterService {
       });
   }
 
+
   private specList = new Subject();
 
   getSpecList() {
@@ -92,26 +94,37 @@ export class RegisterService {
     //XXXX-XXXX-XXXX   user id create here
   }
 
-  registeruser(name, password, address, contact, dob, blood, email, user) {
-    //console.log("in registershop");
-    this.http
+ 
+  registerUser(fname, lname, password, address, contact, dob, blood, email, user) {
+    this.http.get('http://localhost:8000/getUserId/'+fname+'/'+lname+'/'+user+'/'+dob)
+    .subscribe((response:any)=>{
+      var userId = response.userId
+      this.http
       .post("http://localhost:8000/registeruser", {
-        name,
+        fname,
+        lname,
         password,
         address,
         contact,
         dob,
         blood,
         email,
-        user
+        user,
+        userId
       })
       .subscribe((response: any) => {
         if (response.success) {
           console.log("Inserted Successfully");
           this.Toastr.success("Registration of user successfull!!");
+        }else{
+          console.log('Registration Error')
+          this.Toastr.error('Registration Failed','Failed')
         }
       });
+    })
   }
+
+
   login(uname, password) {
     this.http
       .post("http://localhost:8000/login", { uname, password })
