@@ -5,12 +5,6 @@ var labSchema = new mongoose.Schema({
   labname: String,
   DOE:Date,
   address:String
-  licence: String,
-  name: String,
-  shop_name: String,
-  contact: String,
-  password: String,
-  address: String
 });
 var lab = mongoose.model("lab", labSchema);
 

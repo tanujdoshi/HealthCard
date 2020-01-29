@@ -4,7 +4,6 @@ import { RegisterService } from "../register.service";
 import { ToastrService } from "ngx-toastr";
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
-
 @Component({
   selector: "app-signup2",
   templateUrl: "./signup2.component.html",
@@ -28,13 +27,13 @@ export class Signup2Component implements OnInit {
   public item;
   public items;
 
-
   constructor(
     private _route: ActivatedRoute,
     private router: Router,
     private Toastr: ToastrService,
     private register: RegisterService
-  ) {  
+  ) {}
+  
   ngOnInit() {
     this.dropdownList = [
       { item_id: 1, item_text: 'Full Blood Examination' },
@@ -58,8 +57,6 @@ export class Signup2Component implements OnInit {
    
 
   
-
-  ngOnInit() {
     var basicForm = history.state;
     console.log(JSON.stringify(basicForm));
     this.fname = basicForm.fname;
@@ -71,7 +68,6 @@ export class Signup2Component implements OnInit {
     this.address = basicForm.address;
     this.email = basicForm.email;
     this.contact=basicForm.contact;
-
     this.userId = this.fname + "_" + this.lname;
 
     // Uncomment after ready getId ready in register.service.ts
@@ -82,7 +78,6 @@ export class Signup2Component implements OnInit {
     //   this.dob
     // );
   }
-
  
   registerLab(form) {
     if(this.user == "lab")
@@ -143,38 +138,6 @@ console.log("selected",this.selectedItems);
      
    }
 
-
-  // registerMedic(form) {
-  //   var licence = form.licence.value;
-  //   var shopname = form.shop_name.value;
-  //   var contact = form.contact.value;
-  //   console.log(licence, shopname);
-  //   this.register.register(
-  //     licence,
-  //     this.fname,
-  //     shopname,
-  //     contact,
-  //     this.password,
-  //     this.address,
-  //     this.user
-  //   );
-  // }
-  // registerLab(form) {
-  //   var licence = form.licence.value;
-  //   var shopname = form.lab_name.value;
-  //   var contact = form.contact.value;
-  //   //  console.log(licence , shopname)
-  //   this.register.register(
-  //     licence,
-  //     this.name,
-  //     shopname,
-  //     contact,
-  //     this.password,
-  //     this.address,
-  //     this.user
-  //   );
-  // }
-
   // registerDoc(form) {
   //   this.register.registeDoc(
   //     form.licence.value,
@@ -210,4 +173,3 @@ console.log("selected",this.selectedItems);
   //   );
   // }
 
-}

@@ -120,7 +120,7 @@ app.post("/registeruser", async (req, res) => {
         })
         .catch(err => {
           console.log("user error", err);
-      });
+        });
     })
     .catch(err => {
       console.log("login err:", err);
@@ -213,22 +213,6 @@ app.post("/registermedic",(req,res) => {
     password: req.body.password,
     module: req.body.user,
     userId: req.body.userId
-        });
-    })
-    .catch(err => {
-      console.log("login err:", err);
-    });
-  // });
-});
-
-app.post("/register", async (req, res) => {
-  console.log("Inside post register app.js");
-  var user = req.body.user;
-  console.log(user);
-  new login({
-    uname: req.body.name,
-    password: req.body.password,
-    module: req.body.user
   }).save(function(err, data) {
     if (err) {
       console.log("Error");
@@ -260,15 +244,7 @@ app.post("/register", async (req, res) => {
       shopname: req.body.labname,
       DOE:req.body.DOE,
       address:req.body.shop_address
-  if (user == "medic") {
-    new chemist({
-      licence: req.body.licence,
-      name: req.body.name,
-      shop_name: req.body.shop_name,
-      contact: req.body.contact,
-      password: req.body.password,
-      address: req.body.address
-   }).save(function(err, data) {
+    }).save(function(err, data) {
       if (err) {
         console.log("oh no");
         res.status(500).json({
@@ -287,58 +263,6 @@ app.post("/register", async (req, res) => {
 
 
 })
-
-  }
-  if (user == "lab") {
-    new lab({
-      licence: req.body.licence,
-      name: req.body.name,
-      shop_name: req.body.shop_name,
-      contact: req.body.contact,
-      password: req.body.password,
-      address: req.body.address
-    }).save(function(err, data) {
-      if (err) {
-        console.log("oh no");
-        res.status(500).json({
-          isSucceed: false
-        });
-      } else {
-        console.log(data);
-        console.log("love you baby");
-        res.status(200).json({
-          success: true
-        });
-      }
-    });
-  }
-  if (user == "doctor") {
-    new doctor({
-      licence: req.body.x,
-      name: req.body.x,
-      work_place: req.body.x,
-      specialist: req.body.x,
-      degree: req.body.x,
-      work_place_add: req.body.x,
-      doc_address: req.body.x,
-      work_place_contact: req.body.x,
-      doc_contact: req.body.x
-    }).save(function(err, data) {
-      if (err) {
-        console.log("Error in app.js register doctor");
-        res.status(500).json({
-          isSucceed: false
-        });
-      } else {
-        console.log(data);
-        console.log("Register Doctor Success");
-        res.status(200).json({
-          success: true
-        });
-      }
-    });
-  }
-});
 app.post("/login", (req, res) => {
   console.log("req body", req.body);
   login

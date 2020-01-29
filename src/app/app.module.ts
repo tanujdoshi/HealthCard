@@ -14,7 +14,6 @@ import { Signup2Component } from "./signup2/signup2.component";
 import { ToastrModule } from "ngx-toastr";
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,8 +22,6 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     SignupComponent,
     FooterComponent,
     Signup2Component  ],
-    Signup2Component  
-  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -36,7 +33,6 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
       positionClass: "toast-top-right"
     }),
     NgMultiSelectDropDownModule.forRoot()
-    })
   ],
   providers: [],
   bootstrap: [AppComponent]
