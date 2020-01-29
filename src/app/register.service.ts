@@ -1,11 +1,24 @@
-import { Injectable, TestabilityRegistry } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { ToastrService } from "../../node_modules/ngx-toastr";
+import { BehaviorSubject } from 'rxjs';
+import { LoginStat } from './Classes/Login/login-stat';
+
 @Injectable({
   providedIn: "root"
 })
+
+
+
 export class RegisterService {
+
+  
+  public loginStat = new BehaviorSubject<LoginStat>(new LoginStat())
+  public loginStatCaster = this.loginStat.asObservable()
+
+  public userData = new BehaviorSubject<any>(null)
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -89,6 +102,8 @@ export class RegisterService {
         if (response.success) {
           console.log("Inserted Successfully");
           this.Toastr.success("Registration of user successfull!!");
+          this.router.navigate(["/Login"])
+
         }else{
           console.log('Registration Error')
           this.Toastr.error('Registration Failed','Failed')
@@ -104,12 +119,27 @@ export class RegisterService {
       .subscribe((response: any) => {
         console.log("login:", response);
         if (response.success) {
-          sessionStorage.setItem("isLogged", "true");
-          sessionStorage.setItem("userType", response.userType);
-          this.Toastr.success("Login Successful");
+          var s = new LoginStat()
+          s.isLogged = true
+          s.userType = response.userType
+          this.loginStat.next(s)
+
+          this.userData.next(response.userData)
+          this.Toastr.success("Login Successful")
+          this.router.navigate(["/Patient/Home"])
         } else {
-          this.Toastr.error("Login Failed");
+          this.Toastr.error("Login Failed")
         }
       });
+  }
+
+  logout()
+  {
+    var s = new LoginStat()
+    s.isLogged = false
+    s.userType = null
+    this.loginStat.next(s)
+    this.Toastr.success("Logged Out")
+    this.router.navigate(["/Login"])
   }
 }
