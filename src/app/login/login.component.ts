@@ -7,6 +7,7 @@ import { RegisterService } from '../register.service';
   styleUrls: ["./login.component.css"]
 })
 export class LoginComponent implements OnInit {
+
   constructor(private registeService: RegisterService) {}
 
   ngOnInit() {}
