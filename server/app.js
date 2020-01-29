@@ -5,8 +5,9 @@ var cookieParser = require("cookie-parser");
 var chemist = require("./schemas/chemist");
 var lab = require("./schemas/lab");
 var login = require("./schemas/login");
-var doctor = require("./schemas//doctor");
+var doctor = require("./schemas/doctor");
 const user = require("./schemas/user");
+var specialities = require("./schemas/speciality");
 //var nodemailer = require('nodemailer');
 //var rn = require('random-number');
 //app.use(cookieParser());
@@ -33,13 +34,6 @@ mongoose
   })
   .then(() => console.log("Mongo DB connected"))
   .catch(err => console.log("Mongo connection error ", err));
-
-
-var chemist = require("./schemas/chemist");
-var lab = require("./schemas/lab");
-var login = require("./schemas/login");
-var user = require("./schemas/user");
-var specialities = require("./schemas/speciality");
 
 app.post("/getSpecialities", (req, response) => {
   console.log("Inside getSpecialities");
@@ -222,31 +216,32 @@ app.post("/register", async (req, res) => {
     });
   }
   if (user == "doctor") {
-    new doctor({
-      licence: req.body.x,
-      name: req.body.x,
-      work_place: req.body.x,
-      specialist: req.body.x,
-      degree: req.body.x,
-      work_place_add: req.body.x,
-      doc_address: req.body.x,
-      work_place_contact: req.body.x,
-      doc_contact: req.body.x
-    }).save(function(err, data) {
-      if (err) {
-        console.log("Error in app.js register doctor");
-        res.status(500).json({
-          isSucceed: false
-        });
-      } else {
-        console.log(data);
-        console.log("Register Doctor Success");
-        res.status(200).json({
-          success: true
-        });
-      }
-    });
   }
+});
+
+app.post("/doctorExtraDetail", (req, res) => {
+  console.log("Inside doctorExtraDetail");
+  doctor
+    .create({
+      licence: req.body.licence,
+      degree: req.body.degree,
+      workPlace: req.body.work_place,
+      workPlaceAdd: req.body.work_place_add,
+      workPlaceContact: req.body.work_place_con,
+      speciaities: req.body.specialities
+    })
+    .then(data => {
+      console.log("Register Doctor Success" + data);
+      res.status(200).json({
+        success: true
+      });
+    })
+    .catch(err => {
+      console.log("Error in app.js register doctor:" + err);
+      res.status(500).json({
+        isSucceed: false
+      });
+    });
 });
 
 app.post("/login", (req, res) => {
