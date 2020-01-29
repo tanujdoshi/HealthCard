@@ -9,9 +9,7 @@ var labtest = require("./schemas/labtest");
 var doctor = require("./schemas/doctor");
 const user = require("./schemas/user");
 var specialities = require("./schemas/speciality");
-//var nodemailer = require('nodemailer');
-//var rn = require('random-number');
-//app.use(cookieParser());
+
 app.use(bodyparser.json());
 var options = {
   min: 1000,
@@ -154,7 +152,6 @@ app.post("/registeruser", async (req, res) => {
     .catch(err => {
       console.log("login err:", err);
     });
-  // });
 });
 app.post("/register", async (req, res) => {
   console.log("Inside post register app.js");
@@ -186,32 +183,31 @@ app.post("/register", async (req, res) => {
     }
   });
 
-
   //lab insertion
   if (usertype == "lab") {
-    console.log("inside lab")
-    var selecteditems=req.body.selectedItems
-  
-  selecteditems.forEach(x => {
-    //console.log(x.item_text)
-    //insert lab tests
-    new labtest({
-      userId:req.body.userid,
-      test:x.item_text
-    }).save(function(err,data){
-    if(err){
-      console.log(err)
-    }
-  })
-})
+    console.log("inside lab");
+    var selecteditems = req.body.selectedItems;
 
-//new lab
-   new lab({
-      userId:req.body.userId,
+    selecteditems.forEach(x => {
+      //console.log(x.item_text)
+      //insert lab tests
+      new labtest({
+        userId: req.body.userid,
+        test: x.item_text
+      }).save(function(err, data) {
+        if (err) {
+          console.log(err);
+        }
+      });
+    });
+
+    //new lab
+    new lab({
+      userId: req.body.userId,
       licence: req.body.licence,
       labname: req.body.labname,
-      DOE:req.body.DOE,
-      address:req.body.lab_address
+      DOE: req.body.DOE,
+      address: req.body.lab_address
     }).save(function(err, data) {
       if (err) {
         console.log("oh no");
@@ -226,16 +222,10 @@ app.post("/register", async (req, res) => {
         });
       }
     });
+  }
+});
 
-
-}
-
-  })
-
-  
-
-app.post("/registermedic",(req,res) => {
-
+app.post("/registermedic", (req, res) => {
   var usertype = req.body.user;
   new login({
     email: req.body.email,
@@ -257,36 +247,35 @@ app.post("/registermedic",(req,res) => {
     dob: req.body.dob,
     blood: req.body.blood,
     email: req.body.email,
-    userType: req.body.userType
+    userType: req.body.user
   }).save(function(err, data) {
     if (err) {
       console.log("Error");
     }
   });
 
-
   //lab insertion
 
-   new chemist({
-      userId:req.body.userId,
-      licence: req.body.licence,
-      shopname: req.body.labname,
-      DOE:req.body.DOE,
-      address:req.body.shop_address
-    }).save(function(err, data) {
-      if (err) {
-        console.log("oh no");
-        res.status(500).json({
-          isSucceed: false
-        });
-      } else {
-        console.log(data);
-        console.log("love you baby");
-        res.status(200).json({
-          success: true
-        });
-      }
-    });
+  new chemist({
+    userId: req.body.userId,
+    licence: req.body.licence,
+    shopname: req.body.labname,
+    DOE: req.body.DOE,
+    address: req.body.shop_address
+  }).save(function(err, data) {
+    if (err) {
+      console.log("oh no");
+      res.status(500).json({
+        isSucceed: false
+      });
+    } else {
+      console.log(data);
+      console.log("love you baby");
+      res.status(200).json({
+        success: true
+      });
+    }
+  });
 });
 
 app.post("/doctorExtraDetail", (req, res) => {
