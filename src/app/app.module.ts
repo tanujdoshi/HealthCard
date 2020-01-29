@@ -14,6 +14,7 @@ import { Signup2Component } from "./signup2/signup2.component";
 import { ToastrModule } from "ngx-toastr";
 import { PatientHomeComponent } from './Patient/patient-home/patient-home.component';
 import { QRCodeModule } from 'angularx-qrcode';
+import { AddPrescriptionComponent } from './add-prescription/add-prescription.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { QRCodeModule } from 'angularx-qrcode';
     FooterComponent,
     Signup2Component,
     PatientHomeComponent,
+    AddPrescriptionComponent,
   ],
   imports: [
     BrowserModule,
