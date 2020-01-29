@@ -1,6 +1,7 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { LoginComponent } from "./login/login.component";
@@ -29,6 +30,7 @@ import { QRCodeModule } from 'angularx-qrcode';
     AppRoutingModule,
     FormsModule,
     BrowserAnimationsModule,
+    NgMultiSelectDropDownModule.forRoot(),
     HttpClientModule,
     QRCodeModule,
     ToastrModule.forRoot({
