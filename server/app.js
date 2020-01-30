@@ -4,7 +4,6 @@ const app = express();
 const chemist = require("./schemas/chemist");
 const labtest = require("./schemas/labtest");
 const doctor = require("./schemas/doctor");
-const chemist = require("./schemas/chemist");
 const lab = require("./schemas/lab");
 const login = require("./schemas/login");
 const user = require("./schemas/user");
