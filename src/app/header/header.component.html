@@ -50,7 +50,11 @@
                                 <a class="nav-link" href="contact.html">Contact</a>
                             </li>
 
-                            <li> <a class="nav-link" routerLink="/Login" >Login</a> </li>
+                            <li> 
+                                <a *ngIf="!loginInfo.isLogged" class="nav-link" routerLink="/Login" >Login</a> 
+                                <!-- <button class="btn btn-link" *ngIf="loginInfo.isLogged" (click)="logout()" >Logout</button>  -->
+                                <button class="btn btn" *ngIf="loginInfo.isLogged" (click)="logout()" >Logout</button>
+                            </li>
                             <li> <a class="nav-link" routerLink="/Signup">Sign Up</a></li>
                         </ul>
                         

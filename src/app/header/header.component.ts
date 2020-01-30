@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RegisterService } from '../register.service';
 
 @Component({
   selector: 'app-header',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  public loginInfo
 
+  constructor(private registerService:RegisterService) { }
+  
   ngOnInit() {
+    this.registerService.loginStatCaster.subscribe(info=>this.loginInfo=info)
+    console.log('loginInfo:',this.loginInfo)
   }
-
+  logout()
+  {
+    this.registerService.logout()
+  }
 }

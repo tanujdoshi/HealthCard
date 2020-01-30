@@ -1,14 +1,14 @@
-var express = require("express");
-var bodyparser = require("body-parser");
-var app = express();
-var cookieParser = require("cookie-parser");
-var chemist = require("./schemas/chemist");
-var lab = require("./schemas/lab");
-var login = require("./schemas/login");
-var labtest = require("./schemas/labtest");
-var doctor = require("./schemas/doctor");
+const bodyparser = require("body-parser");
+const express = require("express");
+const app = express();
+const chemist = require("./schemas/chemist");
+const labtest = require("./schemas/labtest");
+const doctor = require("./schemas/doctor");
+const chemist = require("./schemas/chemist");
+const lab = require("./schemas/lab");
+const login = require("./schemas/login");
 const user = require("./schemas/user");
-var specialities = require("./schemas/speciality");
+const specialities = require("./schemas/speciality");
 
 app.use(bodyparser.json());
 var options = {
@@ -64,25 +64,31 @@ app.post("/addSpecialities", req => {
 });
 
 app.get("/getUserId/:fname/:lname/:userType/:dob", (req, res) => {
-  console.log(req.params);
+  // console.log(req.params);
   var { fname, lname, userType, dob } = req.params;
   var startPart = userType.charAt(0) + fname.substring(0, 2) + lname.charAt(0);
   var endPart =
     dob.substring(dob.length - 2, dob.length) +
     dob.substring(dob.length - 5, dob.length - 3);
 
+  console.log("dob", new Date(dob));
   user
     .findOne({
+      userId: {
+        $regex: new RegExp("^" + userType.charAt(0).toUpperCase() + ".")
+      },
       firstname: { $regex: new RegExp("^" + fname + "$", "i") },
-      lastname: { $regex: new RegExp("^" + lname + "$", "i") }
+      lastname: { $regex: new RegExp("^" + lname + "$", "i") },
+      dob: new Date(dob)
     })
     .sort({ _id: -1 })
     .then(r => {
+      console.log(r);
       var middelPart = "not defined";
       console.log("check:", r);
       if (r == null) {
         console.log("mp set to default");
-        middelPart = "AA00";
+        middelPart = "0000";
         console.log("mp:", middelPart);
       } else {
         console.log("mp other");
@@ -322,10 +328,17 @@ app.post("/login", (req, res) => {
           success: false
         });
       } else {
-        res.status(200).json({
-          success: true,
-          userType: r.module
-        });
+        user
+          .findOne({ userId: r.userId }, { userId: 0, _id: 0, __v: 0 })
+          .then(user => {
+            console.log(user);
+            console.log("date:", user.dob);
+            res.status(200).json({
+              success: true,
+              userType: r.module,
+              userData: user
+            });
+          });
       }
     });
 });
