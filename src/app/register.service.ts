@@ -1,10 +1,9 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject  } from 'rxjs';
 import { LoginStat } from './Classes/Login/login-stat';
 import { ToastrService } from "ngx-toastr";
-import { Subject } from "rxjs";
 
 @Injectable({
   providedIn: "root"
@@ -25,11 +24,48 @@ export class RegisterService {
   ) {}
 
 
+  private listusers = new Subject<any>()
+      public alluser:any
+      changeelectroProductt(search:any)
+      {
+      //  console.log('auth changep')
+        this.listusers.next(search)
+      }
+      getelectroproductlistt(){
+        return this.alluser
+      }
+cast9Listener() {
+  return this.listusers.asObservable();
+}
+getuser(){
+  
+  this.http.get('http://localhost:8000/getusers/')
+    .subscribe((response:any)=>{
+      this.alluser = JSON.stringify(response.alluser)
+      this.listusers.next(this.alluser)
+      console.log("Users:",this.alluser)
+    })
+    
+}
   register(password,fname,lname,email,blood,dob,contact,address,user,licence,labname,DOE,lab_address,selectedItems) {
     //console.log("in registershop");
     this.http.get('http://localhost:8000/getUserId/'+fname+'/'+lname+'/'+user+'/'+dob)
     .subscribe((response:any)=>{
       var userId = response.userId
+      this.http
+      .post("http://localhost:8000/registeruser", {
+        fname,
+        lname,
+        password,
+        address,
+        contact,
+        dob,
+        blood,
+        email,
+        user,
+        userId
+      })
+      .subscribe((response: any) => {
       if(user == "lab")
       {
       this.http
@@ -44,12 +80,27 @@ export class RegisterService {
         });
     }
   })
+  })
 };
     registermedic(password,fname,lname,email,blood,dob,contact,address,user,licence,shopname,DOE,shop_address,)
     {
       this.http.get('http://localhost:8000/getUserId/'+fname+'/'+lname+'/'+user+'/'+dob)
       .subscribe((response:any)=>{
         var userId = response.userId
+        this.http
+        .post("http://localhost:8000/registeruser", {
+          fname,
+          lname,
+          password,
+          address,
+          contact,
+          dob,
+          blood,
+          email,
+          user,
+          userId
+        })
+        .subscribe((response: any) => {
       this.http
       .post("http://localhost:8000/registermedic", {
         userId,password,fname,lname,email,blood,dob,contact,address,user,licence,shopname,DOE,shop_address
@@ -61,6 +112,7 @@ export class RegisterService {
         }
       });
     })
+  })
     }
 
   private specList = new Subject();
@@ -203,7 +255,6 @@ export class RegisterService {
           });
       });
   }
-
 
   login(uname, password) {
     this.http

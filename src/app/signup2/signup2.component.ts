@@ -5,7 +5,6 @@ import { ToastrService } from "ngx-toastr";
 import { IDropdownSettings } from "ng-multiselect-dropdown";
 import { Subscription } from "rxjs";
 
-
 @Component({
   selector: "app-signup2",
   templateUrl: "./signup2.component.html",
@@ -74,6 +73,9 @@ export class Signup2Component implements OnInit {
     this.user = basicForm.user;
     this.email = basicForm.email;
     this.dob = basicForm.dob;
+    this.address = basicForm.address;
+    this.email = basicForm.email;
+    this.contact=basicForm.contact;
     this.dropdownSettings = {
       singleSelection: false,
       idField: "item_id",
@@ -88,8 +90,17 @@ export class Signup2Component implements OnInit {
     this.sub1 = this.register.getSpecList().subscribe((list: []) => {
       this.dropdownList = list;
     });
-  }
 
+    // this.dropdownList = this.register.getSpecialityArray();
+    // Uncomment after ready getId ready in register.service.ts
+    // this.userId = this.register.getId(
+    //   this.fname,
+    //   this.lname,
+    //   this.user,
+    //   this.dob
+    // );
+  }
+ 
   registerLab(form) {
     if(this.user == "lab")
     {
@@ -98,7 +109,10 @@ export class Signup2Component implements OnInit {
     var labname = form.lab_name.value;
     var DOE=form.DOE.value;
     var lab_address=form.address.value;
-  console.log("selected",this.selectedItems);
+  //  var l=form.l1.value;
+console.log("selected",this.selectedItems);
+    //qvar contact = form.contact.value;
+    //console.log(licence, shopname);
     this.register.register(
       this.password,
       this.fname,
@@ -114,17 +128,15 @@ export class Signup2Component implements OnInit {
       DOE,
       lab_address,
       this.selectedItems
+
    );
     }
-
-
-
     if(this.user == "medic")
     {
       var licence =form.licence.value;
-      var labname = form.lab_name.value;
-      var DOE=form.DOE.value;
-      var shop_address=form.address.value;
+    var labname = form.lab_name.value;
+    var DOE=form.DOE.value;
+    var shop_address=form.address.value;
       console.log("medic")
       this.register.registermedic(
         this.password,
@@ -141,6 +153,7 @@ export class Signup2Component implements OnInit {
         DOE,
         shop_address,  
      );
+
     }
   }
   addSpeciality() {
@@ -153,6 +166,28 @@ export class Signup2Component implements OnInit {
     this.specialities.splice(i, 1);
   }
 
+  // registerMedic(form) {
+  //   var licence = form.licence.value;
+  //   var shopname = form.shop_name.value;
+  //   var contact = form.contact.value;
+  //   console.log(licence, shopname);
+  //   this.register.register(
+  //     licence,
+  //     this.fname,
+  //     shopname,
+  //     contact,
+  //     this.password,
+  //     this.address,
+  //     this.user
+  //   );
+  // }
+  // registerLab(form) {
+  //   var licence = form.licence.value;
+  //   var shopname = form.lab_name.value;
+  //   var contact = form.contact.value;
+  //   //  console.log(licence , shopname)
+     
+   
 
   registerDoc(form) {
     this.specialities.forEach(spec => {
@@ -178,3 +213,23 @@ export class Signup2Component implements OnInit {
     );
   }
 }
+  // registerPatient(form) {
+  //   //console.log("In com");
+  //   var contact = form.contact.value;
+  //   var dob = form.DOB.value;
+  //   var blood = form.bloodType.value;
+  //   var email = form.email.value;
+  //   this.register.registeruser(
+  //     this.fname,
+  //     this.lname,
+  //     this.userId,
+  //     this.password,
+  //     this.address,
+  //     contact,
+  //     dob,
+  //     blood,
+  //     email,
+  //     this.user
+  //   );
+  // }
+
