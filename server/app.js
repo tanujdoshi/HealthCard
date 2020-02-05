@@ -9,6 +9,7 @@ const login = require("./schemas/login");
 const doctor = require("./schemas//doctor");
 const labtest = require("./schemas/labtest");
 const user = require("./schemas/user");
+const labreport = require("./schemas/labreport")
 
 //var nodemailer = require('nodemailer');
 //var rn = require('random-number');
@@ -375,10 +376,18 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage })
 
-app.post("/upload",upload.array('files'), (req,res) =>{
+app.post("/upload/:userid",upload.array('files'), (req,res) =>{
   const files=req.files;
   files.forEach(x => {
     console.log(x.filename)
+    console.log("uSERID",req.params.userid)
+    labreport.create({
+      labid:"Not done yet",
+      userid: req.params.userid,
+      report: x.filename,
+    }).then(data=> {
+
+    })
   });
   //console.log(file.filename)
   if(!files)

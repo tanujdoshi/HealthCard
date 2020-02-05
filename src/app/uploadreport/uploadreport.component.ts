@@ -26,7 +26,7 @@ export class UploadreportComponent implements OnInit {
   selectedItems = [];
   dropdownSettings = {};
   temp =[] 
-  
+  selected:any;
   constructor(private http:HttpClient,private register: RegisterService) { }
   keyword = 'name';
   data = [
@@ -42,6 +42,7 @@ export class UploadreportComponent implements OnInit {
  
  
   selectEvent(item) {
+    this.selected=item;
     // do something with selected item
   }
  
@@ -91,17 +92,19 @@ export class UploadreportComponent implements OnInit {
 
   }
   upload(){
-
+    
     const fd = new FormData();
     for(let img of this.images){
       fd.append('files', img);
     }
+   // this.register.uploadreport(fd,this.selected);
     this.http
-    .post("http://localhost:8000/upload", fd)
+    .post("http://localhost:8000/upload/"+this.selected.name, fd)
     .subscribe(
       (res) => console.log(res),
       (err) => console.log(err)
     );
+    console.log("In upload",fd)
   }
 
 }

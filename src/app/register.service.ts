@@ -82,6 +82,19 @@ getuser(){
   })
   })
 };
+uploadreport(fd,selected)
+{
+  console.log("selected item",selected)
+
+  this.http
+  .post("http://localhost:8000/upload/"+selected.name,{fd})
+  .subscribe((response: any) => {
+    if (response.success) {
+      console.log("Inserted Successfully");
+      this.Toastr.success("Report Uploaded!!");
+    }
+  });
+}
     registermedic(password,fname,lname,email,blood,dob,contact,address,user,licence,shopname,DOE,shop_address,)
     {
       this.http.get('http://localhost:8000/getUserId/'+fname+'/'+lname+'/'+user+'/'+dob)
