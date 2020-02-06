@@ -6,6 +6,7 @@ import { Signup2Component } from "./signup2/signup2.component";
 import { PatientHomeComponent } from "./Patient/patient-home/patient-home.component";
 import { PatientGuard } from "./Gaurds/patient.guard";
 import { AddPrescriptionComponent } from "./add-prescription/add-prescription.component";
+import {UploadreportComponent} from './uploadreport/uploadreport.component';
 
 const routes: Routes = [
   { path: "Login", component: LoginComponent },
@@ -16,7 +17,8 @@ const routes: Routes = [
     component: PatientHomeComponent,
     canActivate: [PatientGuard]
   },
-  { path: "Prescription", component: AddPrescriptionComponent }
+  { path: "Prescription", component: AddPrescriptionComponent },
+  { path: "upload", component: UploadreportComponent },
 ];
 
 @NgModule({

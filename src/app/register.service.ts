@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject  } from 'rxjs';
 import { LoginStat } from './Classes/Login/login-stat';
 import { ToastrService } from "ngx-toastr";
 import { Subject } from "rxjs";
+import * as CryptoJs from 'crypto-js';
 
 @Injectable({
   providedIn: "root"
@@ -21,20 +22,103 @@ export class RegisterService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private Toastr: ToastrService
+    private Toastr: ToastrService,
   ) {}
 
-  register(licence, name, shop_name, contact, password, address, user) {
+
+  private listusers = new Subject<any>()
+      public alluser:any
+      changeelectroProductt(search:any)
+      {
+      //  console.log('auth changep')
+        this.listusers.next(search)
+      }
+      getelectroproductlistt(){
+        return this.alluser
+      }
+cast9Listener() {
+  return this.listusers.asObservable();
+}
+getuser(){
+  
+  this.http.get('http://localhost:8000/getusers/')
+    .subscribe((response:any)=>{
+      this.alluser = JSON.stringify(response.alluser)
+      this.listusers.next(this.alluser)
+      console.log("Users:",this.alluser)
+    })
+    
+}
+  register(password,fname,lname,email,blood,dob,contact,address,user,licence,labname,DOE,lab_address,selectedItems) {
     //console.log("in registershop");
-    this.http
-      .post("http://localhost:8000/register", {
-        licence,
-        name,
-        shop_name,
-        contact,
+    this.http.get('http://localhost:8000/getUserId/'+fname+'/'+lname+'/'+user+'/'+dob)
+    .subscribe((response:any)=>{
+      var userId = response.userId
+      this.http
+      .post("http://localhost:8000/registeruser", {
+        fname,
+        lname,
         password,
         address,
-        user
+        contact,
+        dob,
+        blood,
+        email,
+        user,
+        userId
+      })
+      .subscribe((response: any) => {
+      if(user == "lab")
+      {
+      this.http
+        .post("http://localhost:8000/register", {
+          userId,password,fname,lname,email,blood,dob,contact,address,user,licence,labname,DOE,lab_address,selectedItems
+        })
+        .subscribe((response: any) => {
+          if (response.success) {
+            console.log("Inserted Successfully");
+            this.Toastr.success("Registration of  Lab successfull!!");
+          }
+        });
+    }
+  })
+  })
+};
+uploadreport(fd,selected)
+{
+  console.log("selected item",selected)
+
+  this.http
+  .post("http://localhost:8000/upload/"+selected.name,{fd})
+  .subscribe((response: any) => {
+    if (response.success) {
+      console.log("Inserted Successfully");
+      this.Toastr.success("Report Uploaded!!");
+    }
+  });
+}
+    registermedic(password,fname,lname,email,blood,dob,contact,address,user,licence,shopname,DOE,shop_address,)
+    {
+      this.http.get('http://localhost:8000/getUserId/'+fname+'/'+lname+'/'+user+'/'+dob)
+      .subscribe((response:any)=>{
+        var userId = response.userId
+        this.http
+        .post("http://localhost:8000/registeruser", {
+          fname,
+          lname,
+          password,
+          address,
+          contact,
+          dob,
+          blood,
+          email,
+          user,
+          userId
+        })
+        .subscribe((response: any) => {
+      this.http
+      .post("http://localhost:8000/registermedic", {
+        userId,password,fname,lname,email,blood,dob,contact,address,user,licence,shopname,DOE,shop_address
       })
       .subscribe((response: any) => {
         if (response.success) {
@@ -42,7 +126,9 @@ export class RegisterService {
           this.Toastr.success("Registration of medical shop successfull!!");
         }
       });
-  }
+    })
+  })
+    }
 
   private specList = new Subject();
 
@@ -58,10 +144,6 @@ export class RegisterService {
         console.log(JSON.stringify(response));
         this.specList.next(response.specialityArray);
       });
-  }
-
-  getId(fname, lname, user, dob) {
-    //XXXX-XXXX-XXXX   user id create here
   }
 
   registeDoc(
@@ -189,14 +271,23 @@ export class RegisterService {
     this.http
       .post("http://localhost:8000/login", { uname, password })
       .subscribe((response: any) => {
-        console.log("login:", response);
+        //console.log("login:", response);
         if (response.success) {
           var s = new LoginStat()
           s.isLogged = true
           s.userType = response.userType
           this.loginStat.next(s)
 
+          console.log(response)
           this.userData.next(response.userData)
+
+
+          var encuerType = CryptoJs.AES.encrypt(response.userType,"Hello!")
+          var bytes = CryptoJs.AES.decrypt(encuerType,"Hello!")
+          var pt = bytes.toString(CryptoJs.enc.Utf8);
+          console.log('Ct:',encuerType," pt:",pt)
+          sessionStorage.setItem("isLogged","true")
+          sessionStorage.setItem("type",encuerType)
           this.Toastr.success("Login Successful")
           this.router.navigate(["/Patient/Home"])
         } else {
@@ -211,7 +302,17 @@ export class RegisterService {
     s.isLogged = false
     s.userType = null
     this.loginStat.next(s)
+    sessionStorage.removeItem("isLogged")
+    sessionStorage.removeItem("userId")
     this.Toastr.success("Logged Out")
     this.router.navigate(["/Login"])
+  }
+
+  updateLoginStat(userId)
+  {
+    this.http.post('/update/user',{userId})
+    .subscribe((respose:any)=>{
+      console.log("upade stat:",respose)
+    })
   }
 }
