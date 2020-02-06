@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { LoginStat } from './Classes/Login/login-stat';
 import { ToastrService } from "ngx-toastr";
 import { Subject } from "rxjs";
+import * as CryptoJs from 'crypto-js';
 
 @Injectable({
   providedIn: "root"
@@ -21,7 +22,7 @@ export class RegisterService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private Toastr: ToastrService
+    private Toastr: ToastrService,
   ) {}
 
   register(licence, name, shop_name, contact, password, address, user) {
@@ -58,10 +59,6 @@ export class RegisterService {
         console.log(JSON.stringify(response));
         this.specList.next(response.specialityArray);
       });
-  }
-
-  getId(fname, lname, user, dob) {
-    //XXXX-XXXX-XXXX   user id create here
   }
 
   registeDoc(
@@ -189,14 +186,23 @@ export class RegisterService {
     this.http
       .post("http://localhost:8000/login", { uname, password })
       .subscribe((response: any) => {
-        console.log("login:", response);
+        //console.log("login:", response);
         if (response.success) {
           var s = new LoginStat()
           s.isLogged = true
           s.userType = response.userType
           this.loginStat.next(s)
 
+          console.log(response)
           this.userData.next(response.userData)
+
+
+          var encuerType = CryptoJs.AES.encrypt(response.userType,"Hello!")
+          var bytes = CryptoJs.AES.decrypt(encuerType,"Hello!")
+          var pt = bytes.toString(CryptoJs.enc.Utf8);
+          console.log('Ct:',encuerType," pt:",pt)
+          sessionStorage.setItem("isLogged","true")
+          sessionStorage.setItem("type",encuerType)
           this.Toastr.success("Login Successful")
           this.router.navigate(["/Patient/Home"])
         } else {
@@ -211,7 +217,17 @@ export class RegisterService {
     s.isLogged = false
     s.userType = null
     this.loginStat.next(s)
+    sessionStorage.removeItem("isLogged")
+    sessionStorage.removeItem("userId")
     this.Toastr.success("Logged Out")
     this.router.navigate(["/Login"])
+  }
+
+  updateLoginStat(userId)
+  {
+    this.http.post('/update/user',{userId})
+    .subscribe((respose:any)=>{
+      console.log("upade stat:",respose)
+    })
   }
 }

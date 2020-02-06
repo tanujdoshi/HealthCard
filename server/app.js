@@ -7,8 +7,9 @@ const login = require("./schemas/login");
 const user = require("./schemas/user");
 // const nJwt = require("njwt");
 // const keys = require("./keyConfig");
-var doctor = require("./schemas/doctor");
-var specialities = require("./schemas/speciality");
+const doctor = require("./schemas/doctor");
+const specialities = require("./schemas/speciality");
+const dateFormater = require("date-format");
 //var nodemailer = require('nodemailer');
 //var rn = require('random-number');
 //app.use(cookieParser());
@@ -271,13 +272,17 @@ app.post("/login", (req, res) => {
       } else {
         user
           .findOne({ userId: r.userId }, { userId: 0, _id: 0, __v: 0 })
-          .then(user => {
-            console.log(user);
-            console.log("date:", user.dob);
+          .then(u => {
+            var d = u.toObject();
+            d.dob = dateFormater.asString("dd/MM/yyyy", d.dob);
+            console.log("json:", d);
+            console.log("uisady:", u.toObject());
+
             res.status(200).json({
               success: true,
               userType: r.module,
-              userData: user
+              userData: d,
+              userId: r.userId
             });
           });
       }
